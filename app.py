@@ -200,4 +200,4 @@ def categories():
         ), 500
 
 
-app.run(port=3000, debug=True)
+app.run(port=3000, debug=True, host="0.0.0.0")
