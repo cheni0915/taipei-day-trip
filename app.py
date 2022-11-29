@@ -49,13 +49,7 @@ def api_attractions():
     keyword = request.args.get("keyword")
     nowPage = request.args.get("page")
 
-    # region 輸入錯誤訊息 keyword page error
-    if (keyword == None or keyword == ""):
-        return jsonify({
-            "error": "true",
-            "message": "keyword不得為空"
-        }), 500
-
+    # region 輸入錯誤訊息  page error
     if (nowPage == None or nowPage.isdigit() == False):
         return jsonify({
             "error": "true",
