@@ -2,7 +2,6 @@ from flask import *
 # 使用 mysql-connector-python 套件連結資料庫
 import mysql.connector
 
-
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
