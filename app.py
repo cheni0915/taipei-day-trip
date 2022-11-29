@@ -10,8 +10,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 # 連線資料庫
 db = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="12345678",
+    user="awstest",
+    password="a12345678",
     database="dbtaipei_day_trip"
 )
 
@@ -56,7 +56,7 @@ def api_attractions():
             "message": "keyword不得為空"
         }), 500
 
-    if (nowPage.isdigit() == False):
+    if (nowPage == None or nowPage.isdigit() == False):
         return jsonify({
             "error": "true",
             "message": "page需為數字"
