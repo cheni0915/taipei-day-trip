@@ -43,20 +43,24 @@ def thankyou():
 
 # 旅遊景點API
 # GET/api/attractions   取得景點資料列表
+# page      min:0  取得分頁，每頁12筆資料
+# keyword   完全對比景點分類，模糊對比景點名稱，沒有給定不做篩選
 @app.route("/api/attractions", methods=["GET"])
 def api_attractions():
     cursor = db.cursor(dictionary=True)
     keyword = request.args.get("keyword")
     nowPage = request.args.get("page")
 
-    # region 輸入錯誤訊息  page error
+    # 錯誤訊息
+    # str.isdigit() 可以判斷字串中是否都是數字 ( 不能包含英文、空白或符號 )
+    # 小數點,-也會被視為符號
     if (nowPage == None or nowPage.isdigit() == False):
         return jsonify({
             "error": "true",
             "message": "page需為數字"
-        }), 500
-    # endregion
+        }), 400
 
+    # query string 為str
     nowPage = int(nowPage)
 
     try:
@@ -77,12 +81,14 @@ def api_attractions():
         # 塞入指定需要資料 為datas index = (nowPage *12 ~ nowPage *12 +11)
         for idx, data in enumerate(datas):
             # 判斷需要的datas index
+            # nowPage = 0  (0,11)
             minIndex = nowPage * 12
             maxIndex = nowPage * 12 + 11
-            if maxIndex > lenDatas:
-                maxIndex = lenDatas - 1
+
             # nowPage = 1   lenDatas = 18
             # 會取出(datas[12] ~ datas[17])
+            if maxIndex > lenDatas:
+                maxIndex = lenDatas - 1
 
             if (idx >= minIndex and idx <= maxIndex):
                 filterData = {
@@ -97,9 +103,10 @@ def api_attractions():
                     "lng": data["longitude"],
                     "images": data["file"]
                 }
+                # 每跑完一次迴圈，資料裝進rtnData["data"]裡面一次
                 rtnData["data"].append(filterData)
-
         return jsonify(rtnData)
+
     except Exception as err:
         print(err)
         return jsonify(
@@ -132,7 +139,7 @@ def attractionId(attractionId):
             sql_2 = f"SELECT * FROM data WHERE _id = '{attractionId}' "
             cursor.execute(sql_2)
             data = cursor.fetchone()
-            print(data)
+            # print(data)
             return jsonify(
                 {
                     "data": {
@@ -155,7 +162,8 @@ def attractionId(attractionId):
                 "message": "景點編號不正確"
             }
         ), 400
-    except:
+    except Exception as err:
+        print(err)
         return jsonify(
             {
                 "error": "true",
@@ -172,7 +180,7 @@ def categories():
         sql = "SELECT DISTINCT CAT FROM data "
         cursor.execute(sql)
         datas = cursor.fetchall()
-        print(datas)
+        # print(datas)
         categories = []
         for data in datas:
             # print(e)

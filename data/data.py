@@ -71,6 +71,5 @@ try:
         db.commit()
     print("ok")
 
-
 except Exception as err:
     print(err)
