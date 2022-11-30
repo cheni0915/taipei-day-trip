@@ -57,7 +57,7 @@ def api_attractions():
     if (nowPage == None or nowPage.isdigit() == False):
         return jsonify({
             "error": "true",
-            "message": "page需為數字"
+            "message": "page輸入錯誤"
         }), 400
 
     # query string 為str
