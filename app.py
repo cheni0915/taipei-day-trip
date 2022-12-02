@@ -50,7 +50,6 @@ def api_attractions():
     cursor = db.cursor(dictionary=True)
     keyword = request.args.get("keyword")
     nowPage = request.args.get("page")
-
     # 錯誤訊息
     # str.isdigit() 可以判斷字串中是否都是數字 ( 不能包含英文、空白或符號 )
     # 小數點,-也會被視為符號
@@ -64,11 +63,19 @@ def api_attractions():
     nowPage = int(nowPage)
 
     try:
-        sql = f"SELECT * FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%' "
-        cursor.execute(sql)
-        datas = cursor.fetchall()
+        # 沒有給定keyword => 不做篩選
+        if keyword == None:
+            sql_1 = "SELECT * FROM data"
+            cursor.execute(sql_1)
+            datas = cursor.fetchall()
+            lenDatas = len(datas)
+        else:
+            sql_2 = f"SELECT * FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%' "
+            cursor.execute(sql_2)
+            datas = cursor.fetchall()
+            lenDatas = len(datas)
 
-        lenDatas = len(datas)  # 總抓取資料長度
+        # 資料筆數影響 nextPage 呈現
         if (lenDatas > (nowPage + 1) * 12):
             nextPage = 1
         else:
@@ -89,6 +96,9 @@ def api_attractions():
             # 會取出(datas[12] ~ datas[17])
             if maxIndex > lenDatas:
                 maxIndex = lenDatas - 1
+
+            # images 要以 array string 形式呈現
+            data["file"] = data["file"].split()
 
             if (idx >= minIndex and idx <= maxIndex):
                 filterData = {
@@ -139,7 +149,9 @@ def attractionId(attractionId):
             sql_2 = f"SELECT * FROM data WHERE _id = '{attractionId}' "
             cursor.execute(sql_2)
             data = cursor.fetchone()
-            # print(data)
+
+            # images 要以 array string 形式呈現
+            data["file"] = data["file"].split()
             return jsonify(
                 {
                     "data": {

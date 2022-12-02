@@ -31,11 +31,12 @@ for e in data:
     for x in list_file:
         if ".jpg" in x:
             filterDatas.append(x)
+    print(filterDatas)
 
     # file不能有, mysql操作會報錯，轉換為兩個空格
-    str_filterDatas = '  '.join(str(v) for v in filterDatas)
-    # print(str_filterDatas)
-    e["file"] = str_filterDatas
+    # str_filterDatas = '  '.join(str(v) for v in filterDatas)
+    # # print(str_filterDatas)
+    # e["file"] = str_filterDatas
 
 
 try:
