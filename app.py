@@ -15,10 +15,6 @@ db = mysql.connector.connect(
     database="dbtaipei_day_trip"
 )
 
-# 對資料庫進行操作
-# 使用指標  cursor()
-cursor = db.cursor()
-
 
 # Pages
 @app.route("/")
@@ -47,7 +43,6 @@ def thankyou():
 # keyword   完全對比景點分類，模糊對比景點名稱，沒有給定不做篩選
 @app.route("/api/attractions", methods=["GET"])
 def api_attractions():
-    cursor = db.cursor(dictionary=True)
     keyword = request.args.get("keyword")
     nowPage = request.args.get("page")
     # 錯誤訊息
@@ -63,6 +58,9 @@ def api_attractions():
     nowPage = int(nowPage)
 
     try:
+        # 對資料庫進行操作
+        cursor = db.cursor(dictionary=True)
+
         # 沒有給定keyword => 不做篩選
         if keyword == None:
             sql_1 = "SELECT * FROM data"
@@ -125,6 +123,8 @@ def api_attractions():
                 "message": "伺服器內部錯誤"
             }
         ), 500
+    finally:
+        cursor.close()
 
 
 # 旅遊景點API
@@ -133,14 +133,15 @@ def api_attractions():
 # 網址參考: http://140.112.3.5:3000/api/attraction/10
 @ app.route("/api/attraction/<attractionId>", methods=["GET"])
 def attractionId(attractionId):
-    cursor = db.cursor(dictionary=True)
-
-    sql_1 = "SELECT COUNT(*) FROM data"
-    cursor.execute(sql_1)
-    dataNum = cursor.fetchone()
-    dataNum = dataNum["COUNT(*)"]        # 58
-
     try:
+        # 對資料庫進行操作
+        cursor = db.cursor(dictionary=True)
+
+        sql_1 = "SELECT COUNT(*) FROM data"
+        cursor.execute(sql_1)
+        dataNum = cursor.fetchone()
+        dataNum = dataNum["COUNT(*)"]        # 58
+
         # str.isdigit() 可以判斷字串中是否都是數字 ( 不能包含英文、空白或符號 )
         # 小數點,-也會被視為符號
         if attractionId.isdigit() == False:
@@ -182,6 +183,8 @@ def attractionId(attractionId):
                 "message": "伺服器內部錯誤"
             }
         ), 500
+    finally:
+        cursor.close()
 
 
 #  旅遊景點分類
@@ -189,6 +192,9 @@ def attractionId(attractionId):
 @ app.route("/api/categories")
 def categories():
     try:
+        # 對資料庫進行操作
+        cursor = db.cursor()
+
         sql = "SELECT DISTINCT CAT FROM data "
         cursor.execute(sql)
         datas = cursor.fetchall()
@@ -212,6 +218,8 @@ def categories():
                 "message": "伺服器內部錯誤"
             }
         ), 500
+    finally:
+        cursor.close()
 
 
 app.run(port=3000, debug=True, host="0.0.0.0")
