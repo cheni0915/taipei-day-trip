@@ -1,6 +1,7 @@
 from flask import *
 # 使用 mysql-connector-python 套件連結資料庫
 import mysql.connector
+import mysql.connector.pooling
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -8,7 +9,20 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 # 連線資料庫
-db = mysql.connector.connect(
+# db = mysql.connector.connect(
+#     host="localhost",
+#     user="awstest",
+#     password="a12345678",
+#     database="dbtaipei_day_trip",
+#     # raise_on_warnings: True      # 當例外發生時是否中斷  預設值False
+# )
+
+
+# 使用connetcion pool連線
+dbpool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name="mypool",
+    pool_size=5,
+    pool_reset_session=True,   # 是否重置資料庫connection pool
     host="localhost",
     user="awstest",
     password="a12345678",
@@ -59,6 +73,7 @@ def api_attractions():
 
     try:
         # 對資料庫進行操作
+        db = dbpool.get_connection()
         cursor = db.cursor(dictionary=True)
 
         # 沒有給定keyword => 不做篩選
@@ -113,6 +128,7 @@ def api_attractions():
                 }
                 # 每跑完一次迴圈，資料裝進rtnData["data"]裡面一次
                 rtnData["data"].append(filterData)
+        cursor.close()
         return jsonify(rtnData)
 
     except Exception as err:
@@ -124,7 +140,7 @@ def api_attractions():
             }
         ), 500
     finally:
-        cursor.close()
+        db.close()
 
 
 # 旅遊景點API
@@ -135,6 +151,7 @@ def api_attractions():
 def attractionId(attractionId):
     try:
         # 對資料庫進行操作
+        db = dbpool.get_connection()
         cursor = db.cursor(dictionary=True)
 
         sql_1 = "SELECT COUNT(*) FROM data"
@@ -169,6 +186,8 @@ def attractionId(attractionId):
                     }
                 }
             ), 200
+
+        cursor.close()
         return jsonify(
             {
                 "error": "true",
@@ -184,7 +203,7 @@ def attractionId(attractionId):
             }
         ), 500
     finally:
-        cursor.close()
+        db.close()
 
 
 #  旅遊景點分類
@@ -193,23 +212,27 @@ def attractionId(attractionId):
 def categories():
     try:
         # 對資料庫進行操作
+        db = dbpool.get_connection()
         cursor = db.cursor()
 
         sql = "SELECT DISTINCT CAT FROM data "
         cursor.execute(sql)
         datas = cursor.fetchall()
         # print(datas)
+
         categories = []
         for data in datas:
             # print(e)
             categories += data
         # print(categories)
 
+        cursor.close()
         return jsonify(
             {
                 "data": categories
             }
         ), 200
+
     except Exception as err:
         print(err)
         return jsonify(
@@ -219,7 +242,7 @@ def categories():
             }
         ), 500
     finally:
-        cursor.close()
+        db.close()
 
 
 app.run(port=3000, debug=True, host="0.0.0.0")
