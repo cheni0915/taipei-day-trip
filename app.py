@@ -8,16 +8,6 @@ app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
-# 連線資料庫
-# db = mysql.connector.connect(
-#     host="localhost",
-#     user="awstest",
-#     password="a12345678",
-#     database="dbtaipei_day_trip",
-#     # raise_on_warnings: True      # 當例外發生時是否中斷  預設值False
-# )
-
-
 # 使用connetcion pool連線
 dbpool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mypool",
@@ -78,56 +68,65 @@ def api_attractions():
 
         # 沒有給定keyword => 不做篩選
         if keyword == None:
-            sql_1 = "SELECT * FROM data"
-            cursor.execute(sql_1)
+            # 要使用分頁的概念，不會把全部資料一次抓出來，要limit數量
+            # limit 0,12    抓出 id 1~12的資料
+            # limit 12,12   抓出 id 13~24的資料
+            minIndex = nowPage * 12
+            limit = 12
+            sql_1 = "SELECT * FROM data LIMIT %s,%s"
+            val_1 = (minIndex, limit)
+            cursor.execute(sql_1, val_1)
             datas = cursor.fetchall()
             lenDatas = len(datas)
+
+            # 搜尋到的資料筆數
+            sql_3 = "SELECT COUNT(*) FROM data"
+            cursor.execute(sql_3)
+            dataCount = cursor.fetchone()
+            dataCount = dataCount["COUNT(*)"]
+
         else:
-            sql_2 = f"SELECT * FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%' "
+            minIndex = nowPage * 12
+            limit = 12
+            sql_2 = f"SELECT * FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%' LIMIT {minIndex},{limit} "
             cursor.execute(sql_2)
             datas = cursor.fetchall()
             lenDatas = len(datas)
 
-        # 資料筆數影響 nextPage 呈現
-        if (lenDatas > (nowPage + 1) * 12):
+            # 搜尋到的資料筆數
+            sql_4 = f"SELECT COUNT(*) FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%'"
+            cursor.execute(sql_4)
+            dataCount = cursor.fetchone()
+            dataCount = dataCount["COUNT(*)"]
+
+        # 搜尋到的資料筆數 > 12 => nextPage = 1
+        if (dataCount > (nowPage + 1) * 12):
             nextPage = 1
         else:
             nextPage = None
 
         rtnData = {"nextPage": nextPage, "data": []}
 
-        # nowPage = 0  (0,11)
-        # nowPage = 1  (12,23)...
-        # 塞入指定需要資料 為datas index = (nowPage *12 ~ nowPage *12 +11)
-        for idx, data in enumerate(datas):
-            # 判斷需要的datas index
-            # nowPage = 0  (0,11)
-            minIndex = nowPage * 12
-            maxIndex = nowPage * 12 + 11
-
-            # nowPage = 1   lenDatas = 18
-            # 會取出(datas[12] ~ datas[17])
-            if maxIndex > lenDatas:
-                maxIndex = lenDatas - 1
-
+        # 每個分頁最多12筆資料
+        for data in datas:
             # images 要以 array string 形式呈現
             data["file"] = data["file"].split()
 
-            if (idx >= minIndex and idx <= maxIndex):
-                filterData = {
-                    "id": data["_id"],
-                    "name": data["name"],
-                    "category": data["CAT"],
-                    "description": data["description"],
-                    "address": data["address"],
-                    "transport": data["direction"],
-                    "mrt": data["MRT"],
-                    "lat": data["latitude"],
-                    "lng": data["longitude"],
-                    "images": data["file"]
-                }
-                # 每跑完一次迴圈，資料裝進rtnData["data"]裡面一次
-                rtnData["data"].append(filterData)
+            filterData = {
+                "id": data["_id"],
+                "name": data["name"],
+                "category": data["CAT"],
+                "description": data["description"],
+                "address": data["address"],
+                "transport": data["direction"],
+                "mrt": data["MRT"],
+                "lat": data["latitude"],
+                "lng": data["longitude"],
+                "images": data["file"]
+            }
+            # 每跑完一次迴圈，資料裝進rtnData["data"]裡面一次
+            rtnData["data"].append(filterData)
+
         cursor.close()
         return jsonify(rtnData)
 
@@ -156,14 +155,14 @@ def attractionId(attractionId):
 
         sql_1 = "SELECT COUNT(*) FROM data"
         cursor.execute(sql_1)
-        dataNum = cursor.fetchone()
-        dataNum = dataNum["COUNT(*)"]        # 58
+        dataCount = cursor.fetchone()
+        dataCount = dataCount["COUNT(*)"]        # 58
 
         # str.isdigit() 可以判斷字串中是否都是數字 ( 不能包含英文、空白或符號 )
         # 小數點,-也會被視為符號
         if attractionId.isdigit() == False:
             pass
-        elif int(attractionId) >= 1 and int(attractionId) <= dataNum:
+        elif int(attractionId) >= 1 and int(attractionId) <= dataCount:
             sql_2 = f"SELECT * FROM data WHERE _id = '{attractionId}' "
             cursor.execute(sql_2)
             data = cursor.fetchone()
