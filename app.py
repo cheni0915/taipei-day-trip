@@ -73,11 +73,11 @@ def api_attractions():
             # limit 12,12   抓出 id 13~24的資料
             minIndex = nowPage * 12
             limit = 12
+
             sql_1 = "SELECT * FROM data LIMIT %s,%s"
             val_1 = (minIndex, limit)
             cursor.execute(sql_1, val_1)
             datas = cursor.fetchall()
-            lenDatas = len(datas)
 
             # 搜尋到的資料筆數
             sql_3 = "SELECT COUNT(*) FROM data"
@@ -88,14 +88,16 @@ def api_attractions():
         else:
             minIndex = nowPage * 12
             limit = 12
-            sql_2 = f"SELECT * FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%' LIMIT {minIndex},{limit} "
-            cursor.execute(sql_2)
+
+            sql_2 = "SELECT * FROM data WHERE CAT =%s or name LIKE %s LIMIT %s,%s"
+            val_2 = (keyword, "%" + keyword + "%", minIndex, 12)
+            cursor.execute(sql_2, val_2)
             datas = cursor.fetchall()
-            lenDatas = len(datas)
 
             # 搜尋到的資料筆數
-            sql_4 = f"SELECT COUNT(*) FROM data WHERE CAT = '{keyword}' or name LIKE '%{keyword}%'"
-            cursor.execute(sql_4)
+            sql_4 = "SELECT COUNT(*) FROM data WHERE CAT =%s or name LIKE %s"
+            val_4 = (keyword, "%" + keyword + "%")
+            cursor.execute(sql_4, val_4)
             dataCount = cursor.fetchone()
             dataCount = dataCount["COUNT(*)"]
 
@@ -163,9 +165,13 @@ def attractionId(attractionId):
         if attractionId.isdigit() == False:
             pass
         elif int(attractionId) >= 1 and int(attractionId) <= dataCount:
-            sql_2 = f"SELECT * FROM data WHERE _id = '{attractionId}' "
-            cursor.execute(sql_2)
+            # sql_2 = f"SELECT * FROM data WHERE _id = '{attractionId}' "
+            sql_2 = "SELECT * FROM data WHERE _id =%s"
+            val_2 = [attractionId]
+            # print(val_2)
+            cursor.execute(sql_2, val_2)
             data = cursor.fetchone()
+            # print(data)
 
             # images 要以 array string 形式呈現
             data["file"] = data["file"].split()
