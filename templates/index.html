@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台北一日遊</title>
+    <!-- 字體引用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 網站 CSS設定 -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
+    <!-- {{ url_for('static', filename='index.css') }} -->
+    <!-- ../static/index.css -->
+  </head>
+  <body>
+    <!-- header 必須固定 -->
+    <header>
+      <div class="header__content">
+        <div class="header__title">台北一日遊</div>
+        <div class="header__list">
+          <div class="header__item">預定行程</div>
+          <div class="header__item">登入/註冊</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 中間 -->
+    <div
+      class="welcome"
+      style="background-image: url({{ url_for('static', filename='image/welcome.png') }})"
+    >
+      <div class="welcome__content">
+        <div class="welcome__title">輕鬆享受台北一日悠閒</div>
+        <div class="welcome__phrase">探索每個角落，體驗城市的深度旅遊行程</div>
+        <div class="welcome__search">
+          <input
+            class="welcome__search__input"
+            type="text"
+            placeholder="輸入景點名稱查詢"
+            name="keyword"
+          />
+          <!-- 搜尋 icon -->
+          <button class="welcome__search__button">
+            <img
+              src="{{ url_for('static', filename='/image/icon_search.png') }}"
+              alt=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- 主畫面 -->
+    <main>
+      <div class="main__content">
+        <!-- 12筆景點 -->
+        <!-- 景點放置處 -->
+        <div class="attractions">
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="attractions__content">
+            <div class="attractions__space">
+              <img
+                src="{{ url_for('static', filename='image/welcome.png') }}"
+                class="attractions__image"
+                alt=""
+              />
+              <div class="attractions__filter"></div>
+              <div class="attractions__name">test1</div>
+            </div>
+            <div class="attractions__information">
+              <div class="attractions__mrt">MRT1</div>
+              <div class="attractions__cat">CAT1</div>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer__content">COPYRIGHT © 2022 台北一日遊</div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='/app.js') }}"></script>
+  </body>
+</html>

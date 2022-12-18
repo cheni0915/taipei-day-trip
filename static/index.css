@@ -1,0 +1,246 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/* 版面設定 */
+/* header */
+header {
+    display: flex;
+    justify-content: center;
+    background-color:#FFFFFF;
+    width: 100%;
+    height: 100%;
+    
+    /* 黏在畫面最上方 */
+    position: sticky;
+    top: 0;
+}
+
+.header__content {
+    width: 1200px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__title {
+    color: #448899;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0px 5px;
+}
+
+.header__list {
+    display: flex; 
+}
+
+.header__item {
+    color: #666666;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0px 10px;
+
+}
+
+/* welcome */
+/* 背景圖片加在welcome之下 */
+.welcome {
+    /* 圖片長寬放到最大，填滿 */
+    background-size:cover; 
+    background-repeat: no-repeat;
+    background-position: top;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome__content {
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.welcome__title {
+    color: #F8F8F8;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 10px 0px;
+}
+
+.welcome__phrase {
+    color: #F8F8F8;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    padding: 20px 0px;
+
+}
+
+.welcome__search {
+    display: flex;
+    width: 460px;
+    padding: 15px 0px;
+}
+
+.welcome__search__input {
+    width: 100%;
+    height: 46px;
+    color: #757575;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    /* 
+    外框調整  
+    左上 右上 右下 左下
+    */
+    border-width: 0px;
+    border-radius: 8px 0px 0px 8px;
+    /* 上右下左 */
+    padding: 5px 0px 5px 15px;
+}
+
+.welcome__search__button {
+    background: #448899;
+    padding: 5px 20px;
+    /* 外框調整 */
+    border-width: 0px;
+    border-radius: 0px 8px 8px 0px;
+}
+
+
+
+/* attractions */
+main {
+    display: flex;
+    justify-content: center;
+
+}
+
+.main__content {
+    width: 1200px;
+    margin: 20px 0px;
+}
+
+.attractions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) ;
+    grid-template-rows: repeat(3, 1fr) ;
+    grid-gap: 25px;
+    margin: 35px 10px;
+}
+
+
+/* 圖片位置 */
+.attractions__space {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.attractions__image {
+    width: 100%;
+    height: 100%;
+    /* 根據容器大小重置圖片的大小，並設置位置 */
+    object-fit: cover;
+    object-position: center ;
+    border-radius: 5px 5px 0px 0px;
+;
+}
+
+.attractions__filter {
+    background-color: black;
+    width: 100%;
+    height: 30px;
+    opacity: 0.3;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+}
+
+.attractions__name {
+    color: white;
+    font-family: "Noto Sans TC";
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    padding: 10px;
+}
+
+.attractions__information {
+    background-color:white;
+    color: #757575;;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 13px;
+    padding: 10px;
+    border-radius: 0px 0px 5px 5px;
+    border: 1px solid rgb(233, 226, 226);
+    display: flex;
+    justify-content:space-between;
+}
+
+/* 
+最外面設個div,把header.welcome.main.footer都裝起來
+footer用 align-item:flex end的方式放最下面?
+*/
+
+
+
+/* footer */
+footer {
+    background: #757575;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.footer__content {
+    color: #FFFFFF;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    padding: 34px 0px;
+}
+
+
+@media (max-width:1200px)  {
+    .attractions {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows:auto;
+    }
+}
+
+
+
+@media (max-width:600px)  {
+    .welcome__search {
+        width: 300px;
+    }
+    .attractions {
+        grid-template-columns: 1fr;
+        grid-template-rows:auto;
+    }
+}

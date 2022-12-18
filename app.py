@@ -3,9 +3,20 @@ from flask import *
 import mysql.connector
 import mysql.connector.pooling
 
-app = Flask(__name__)
+# pip install flask_cors
+from flask_cors import CORS
+
+# 建立 Application 物件，設定靜態檔案的路徑處理
+app = Flask(
+    __name__,
+    static_folder="static",
+    static_url_path="/"
+)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+# CORS() 將會套用於所有 domains 和 routes
+CORS(app)
 
 
 # 使用connetcion pool連線
