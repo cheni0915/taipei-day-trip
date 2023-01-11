@@ -4,17 +4,8 @@ let attractions_names = document.getElementsByClassName("attractions__name");
 let attractions_mrts = document.getElementsByClassName("attractions__mrt");
 let attractions_cats = document.getElementsByClassName("attractions__cat");
 
-// 12筆資料
-// console.log(attractions_mrts);
-
-// "http://18.180.213.40:3000/api/attractions?page=1"     EC2
-// "http://192.168.2.168:3000/api/attractions?page=0"     自家
-
-// fetch(request, {mode: 'cors'});
-
-
 fetch(
-    "http://192.168.2.168:3000/api/attractions?page=0"
+    "/api/attractions?page=0"
 ).then(function(response){
     return response.json();
 }).then(function(data){
