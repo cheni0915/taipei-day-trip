@@ -52,6 +52,11 @@ def thankyou():
     return render_template("thankyou.html")
 
 
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
+
 # 旅遊景點API
 # GET/api/attractions   取得景點資料列表
 # page      min:0  取得分頁，每頁12筆資料

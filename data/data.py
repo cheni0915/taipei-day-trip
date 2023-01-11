@@ -39,42 +39,45 @@ for e in data:
     # e["file"] = str_filterDatas
 
 
+
+# 連結dbtaipei_day_trip資料庫
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="12345678",
+    database="dbtaipei_day_trip"
+)
+
 try:
-    # 連結dbtaipei_day_trip資料庫
-    db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345678",
-        database="dbtaipei_day_trip"
-    )
     # 對資料庫進行操作
     # 使用指標  cursor()
     cursor = db.cursor()
+    try:
+        for e in data:
+            # 資料庫執行
+            # sql = f"""INSERT INTO data (rate, direction, name, date,
+            # longitude, REF_WP, avBegin, langinfo, MRT, SERIAL_NO, RowNumber,
+            # CAT, MEMO_TIME, POI, file, idpt, latitude, description, _id, avEnd,
+            # address) VALUES ({value})"""
+            sql = f"""INSERT INTO data (
+                rate, direction, name, date, longitude, 
+                REF_WP, avBegin, langinfo, MRT, SERIAL_NO, 
+                RowNumber, CAT,  MEMO_TIME, POI, file, 
+                idpt, latitude, description, _id, avEnd, address) 
+                VALUES (
+                '{e["rate"]}' , '{e["direction"]}', '{e["name"]}', '{e["date"]}', '{e["longitude"]}', 
+                '{e["REF_WP"]}', '{e["avBegin"]}', '{e["langinfo"]}', '{e["MRT"]}', '{e["SERIAL_NO"]}', 
+                '{e["RowNumber"]}', '{e["CAT"]}', '{e["MEMO_TIME"]}', '{e["POI"]}', '{e["file"]}', 
+                '{e["idpt"]}', '{e["latitude"]}', '{e["description"]}', '{e["_id"]}', '{e["avEnd"]}', '{e["address"]}')"""
 
-    for e in data:
-        # 資料庫執行
-        # sql = f"""INSERT INTO data (rate, direction, name, date,
-        # longitude, REF_WP, avBegin, langinfo, MRT, SERIAL_NO, RowNumber,
-        # CAT, MEMO_TIME, POI, file, idpt, latitude, description, _id, avEnd,
-        # address) VALUES ({value})"""
-        sql = f"""INSERT INTO data (
-            rate, direction, name, date, longitude, 
-            REF_WP, avBegin, langinfo, MRT, SERIAL_NO, 
-            RowNumber, CAT,  MEMO_TIME, POI, file, 
-            idpt, latitude, description, _id, avEnd, address) 
-            VALUES (
-            '{e["rate"]}' , '{e["direction"]}', '{e["name"]}', '{e["date"]}', '{e["longitude"]}', 
-            '{e["REF_WP"]}', '{e["avBegin"]}', '{e["langinfo"]}', '{e["MRT"]}', '{e["SERIAL_NO"]}', 
-            '{e["RowNumber"]}', '{e["CAT"]}', '{e["MEMO_TIME"]}', '{e["POI"]}', '{e["file"]}', 
-            '{e["idpt"]}', '{e["latitude"]}', '{e["description"]}', '{e["_id"]}', '{e["avEnd"]}', '{e["address"]}')"""
-
-        cursor.execute(sql)
-        db.commit()
-    print("ok")
+            cursor.execute(sql)
+            db.commit()
+        print("ok")
+    finally:
+        cursor.close()
 
 except Exception as err:
     print(err)
 
 finally:
-    cursor.close()
     db.close()
