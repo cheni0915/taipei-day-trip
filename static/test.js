@@ -1,27 +1,23 @@
-
-// "http://18.180.213.40:3000/api/attractions?page=1"     EC2
-// "http://192.168.2.168:3000/api/attractions?page=0"     自家
-
 // fetch(request, {mode: 'cors'});
 
 // fetch(
-//     // "http://192.168.2.168:3000/api/attractions?page=0"   絕對路徑
-//     "/api/attractions?page=0"                         //  相對路徑
+//     "/api/attractions?page=0"                       
 // ).then(function(response){
 //     return response.json();
-// }).then(function(data){
-//     // 頁數
-//     nextPage = data.nextPage;
-//     // console.log(nextPage);      // 1
+// }).then(function(body){
+// 	// console.log(body);     data {}
+//     data = body.data;         //  []
 
-//     // console.log(data);     data {}
-//     data = data.data;         //  []
-    
+// 	// 新增資料顯示在畫面上
 //     for (let i = 0; i < data.length; i++) {
 //         setAttraction(data[i]);
-//     }
+// 	}
+	
+//     // fetch頁面完
+// 	   // 判斷是否有下一頁
+//     nextPage = body.nextPage;
+//     // console.log(nextPage);      // 1
 // });
-
 
 // 思考第一筆資料傳入
 function setAttraction(data) {
@@ -82,6 +78,7 @@ function setAttraction(data) {
 	// 第三層-2
 	attractionsInformation.appendChild(attractionsMRT);
 	attractionsInformation.appendChild(attractionsCat);
+
 };
 
 
@@ -122,7 +119,7 @@ observer.observe(footer);
 // 3.容器跟目標都設定好後，就可以設計 callback 要做的事了：
 
 // 預設 page 從0開始
-let page = 0;
+let nextPage = 0;
 
 function callback(entries, observer) {
   for (const entry of entries) {
@@ -130,7 +127,7 @@ function callback(entries, observer) {
       // 元素已經進入視窗
       // console.log("元素已經進入視窗");
       fetch(
-      `/api/attractions?page=${page}`
+      `/api/attractions?page=${nextPage}`
       ).then(function(response){
         return response.json();
       }).then(function(body){
@@ -141,11 +138,10 @@ function callback(entries, observer) {
         }
 		// fetch頁面完
 		// 判斷是否有下一頁
+		// 第0頁,nextPage=1 ； 第1頁,nextPage=2
         nextPage = body.nextPage;
-        // console.log(nextPage);      // 1
-		if (nextPage == 1) {
-			page += 1;
-		} else {
+        console.log(nextPage);      // 1
+		if (nextPage == null) {
 			observer.disconnect();
 		}
       });

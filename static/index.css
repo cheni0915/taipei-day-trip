@@ -143,16 +143,16 @@ main {
 }
 
 
-
 /* 圖片位置 */
 .attractions__space {
     width: 100%;
-    height: 100%;
+    height: 200px;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
+/* 圖片大小設定 */
 .attractions__image {
     width: 100%;
     height: 100%;
@@ -177,9 +177,10 @@ main {
     color: white;
     font-family: "Noto Sans TC";
     font-style: normal;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     line-height: 13px;
+    letter-spacing: 1px;
     position: absolute;
     bottom: 0;
     z-index: 2;
@@ -191,9 +192,10 @@ main {
     color: #757575;;
     font-family: 'Noto Sans TC';
     font-style: normal;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 13px;
+    letter-spacing: 1px;
     padding: 10px;
     border-radius: 0px 0px 5px 5px;
     border: 1px solid rgb(233, 226, 226);

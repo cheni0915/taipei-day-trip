@@ -119,7 +119,7 @@ def api_attractions():
 
         # 搜尋到的資料筆數 > 12 => nextPage = 1
         if (dataCount > (nowPage + 1) * 12):
-            nextPage = 1
+            nextPage = nowPage + 1
         else:
             nextPage = None
 
